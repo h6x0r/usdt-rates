@@ -1,0 +1,8 @@
+.git
+.gitignore
+.golangci.yml
+.dockerignore
+app
+README.md
+Makefile
+**/*_test.go

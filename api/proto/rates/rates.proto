@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package rates.v1;
+
+option go_package = "usdt-rates/api/proto/rates";
+
+import "google/protobuf/timestamp.proto";
+
+// RatesService provides USDT exchange rate information from Grinex
+service RatesService {
+  // GetRates fetches current USDT rates from Grinex exchange
+  rpc GetRates(GetRatesRequest) returns (GetRatesResponse);
+
+  // HealthCheck verifies service availability
+  rpc HealthCheck(HealthCheckRequest) returns (HealthCheckResponse);
+}
+
+// GetRatesRequest specifies the calculation method for rate aggregation
+message GetRatesRequest {
+  // Calculation method: "topN" or "avgNM"
+  string method = 1;
+
+  // Position N (0-based index for topN, start index for avgNM)
+  int32 n = 2;
+
+  // End index M for avgNM method (ignored for topN)
+  int32 m = 3;
+}
+
+// GetRatesResponse contains calculated USDT rates
+message GetRatesResponse {
+  // Ask price (sell price)
+  string ask = 1;
+
+  // Bid price (buy price)
+  string bid = 2;
+
+  // Timestamp when the rate was fetched
+  google.protobuf.Timestamp timestamp = 3;
+}
+
+message HealthCheckRequest {}
+
+message HealthCheckResponse {
+  // Service status: "SERVING" or "NOT_SERVING"
+  string status = 1;
+}
